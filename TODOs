@@ -1,7 +1,13 @@
+Alle #TODO Kommentare aufsuchen und bearbeiten
+
 Docker-Aufsetzen
   Ubuntu
   Flask
-  Flask-MontoAlchemy
+  Flask-MontoAlchemy (MongoDB)
   flask-wtf (Forms)
+  flask-socketio (Websockets)
   MongoDB (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
   Bootstrap4
+
+MongoDB-einrichten
+  https://pythonhosted.org/Flask-MongoAlchemy/
