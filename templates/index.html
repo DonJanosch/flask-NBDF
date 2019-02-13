@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  {% if title %}
+    {{ title }}
+  {% else %}
+    Blog-Posts
+  {% endif %}
+{% endblock title %}
+
+{% block body %}
+  {% for post in posts %}
+    <!-- _article.html requires the context of post -->
+    {% include "_article.html" %}
+  {% endfor %}
+{% endblock body %}

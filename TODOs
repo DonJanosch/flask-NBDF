@@ -1,0 +1,7 @@
+Docker-Aufsetzen
+  Ubuntu
+  Flask
+  Flask-MontoAlchemy
+  flask-wtf (Forms)
+  MongoDB (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+  Bootstrap4
