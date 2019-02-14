@@ -6,6 +6,7 @@ Docker-Aufsetzen
   Flask-MontoAlchemy (MongoDB)
   flask-wtf (Forms)
   flask-socketio (Websockets)
+  pymongo
   MongoDB (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
   Bootstrap4
 

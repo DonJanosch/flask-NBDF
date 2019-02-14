@@ -1,0 +1,24 @@
+// Funktioniert nicht... muss compiliert werden!?
+
+$shadow_spread: 20px
+
+$default_color: #c4c6c6
+$default_shadow: rgba(0, 0, 0, 0.55)
+$avaliable_color: rgba(38, 194, 129, 1)
+$avaliable_shadow: rgba(123, 239, 178, 1)
+$blocked_color: rgba(242, 38, 19, 1)
+$blocked_shadow: rgba(231, 76, 60, 1)
+
+.hoverable
+  background-color: inherit
+  box-shadow: inherit
+  transition-duration: 0.25s
+  &:hover
+    background-color: $default_color
+    box-shadow: 0px 0px $shadow_spread 0px $default_shadow
+  &.avaliable:hover
+    background-color: $avaliable_color
+    box-shadow: 0px 0px $shadow_spread 0px $avaliable_shadow
+  &.blocked:hover
+    background-color: $blocked_color
+    box-shadow: 0px 0px $shadow_spread 0px $blocked_shadow

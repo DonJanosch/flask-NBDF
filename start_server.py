@@ -12,7 +12,7 @@ db_settings = [os.path.join(mongoDB_dir,'mongod'), "--dbpath", db_path,'--quiet'
 # Helperfunctions
 def gracefull_exit(mongod_process_handle):
     mongod_process_handle.kill()
-    print('Killed MongoDB-Subprocess.')
+    print('PYTHON: Gracefully turned off mongod.')
 
 if __name__ == '__main__':
     try:
@@ -24,12 +24,11 @@ if __name__ == '__main__':
         mongod_process = subprocess.Popen(db_settings)
 
         # Start the http-server
-        socketio.run(app,debug=True)
+        print('FLASK: Starting the Webserver')
+        socketio.run(app)#,debug=True)
     except KeyboardInterrupt:
-        pass
-    finally:
         # Stop the Websocket-connections
-        # TODO: Emit shut-down event to notify the client 
+        # TODO: Emit shut-down event to notify the client
         socketio.stop()
         # Gracefully shut down the MongoDB-daemon
         gracefull_exit(mongod_process)

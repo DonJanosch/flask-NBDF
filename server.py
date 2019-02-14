@@ -7,6 +7,7 @@ from tools.calendar import make_example_set_of_assigned_fly_days
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'bfeedbcedf9edab2f6d29e657dd55f94ef2263a080732a0946'
+app.config['MONGOALCHEMY_DATABASE'] = 'library'
 
 socketio = SocketIO(app)
 
@@ -24,6 +25,32 @@ posts = [
         'date_posted': '01.01.2019',
     },
 ]
+
+#MongoDB-Stuff
+from datetime import datetime
+from pymongo import MongoClient
+
+def currentTimestamp():
+    return int(datetime.utcnow().timestamp())
+
+#Connecting the MongoDB -- deliberately did not use SQLAlchemy
+db_name = 'NBDF'
+client = MongoClient()
+db = client[db_name]
+
+# Creating all necessary collections
+User = db.Users
+
+new_user = {
+    'first_name':'',
+    'last_name':'',
+    'email':'',
+    'image_file':'default',
+    'created_at': currentTimestamp(),
+    'last_login':'',
+    'password':'',
+    'password_method':'',
+}
 
 @app.route('/examples')
 @app.route('/example')
