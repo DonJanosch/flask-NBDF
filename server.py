@@ -2,6 +2,7 @@ from flask import Flask, request, flash, render_template, redirect, url_for
 from flask_socketio import SocketIO, emit
 
 from forms import RegistrationForm, LoginForm
+from tools.calendar import make_example_set_of_assigned_fly_days
 
 app = Flask(__name__)
 
@@ -23,6 +24,16 @@ posts = [
         'date_posted': '01.01.2019',
     },
 ]
+
+@app.route('/examples')
+@app.route('/example')
+def example_fly_days():
+    list_of_weekends, _ = make_example_set_of_assigned_fly_days()
+    context = {
+        '_ul_list':list_of_weekends,
+        'title':'Beispielliste'
+    }
+    return render_template('example_fly_days.html',**context)
 
 @app.route('/')
 @app.route('/home')
