@@ -27,6 +27,7 @@ posts = [
 ]
 
 #MongoDB-Stuff
+import os
 from datetime import datetime
 from pymongo import MongoClient
 
@@ -34,7 +35,7 @@ def currentTimestamp():
     return int(datetime.utcnow().timestamp())
 
 #Connecting the MongoDB -- deliberately did not use SQLAlchemy
-db_name = 'NBDF'
+db_name = os.environ.get('db_name','default_DB')
 client = MongoClient()
 db = client[db_name]
 

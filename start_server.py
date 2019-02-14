@@ -4,10 +4,13 @@ import subprocess, os
 from server import socketio, app
 
 # MongoDB handling
-db_dir = 'MongoDB'
+db_name = 'NBDF'
+db_sub_dir = 'MongoDB'
 mongoDB_dir = "C:\\Program Files\\MongoDB\\Server\\4.0\\bin"
-db_path = os.path.join(os.getcwd(),db_dir)
+db_deamon_path = os.path.join(os.getcwd(),db_sub_dir)
 db_settings = [os.path.join(mongoDB_dir,'mongod'), "--dbpath", db_path,'--quiet']
+os.environ['db_name'] = db_name
+os.environ['db_deamon_path'] = db_deamon_path
 
 # Helperfunctions
 def gracefull_exit(mongod_process_handle):
