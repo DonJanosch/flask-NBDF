@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}Beispielliste{% endblock title %}
+
+{% block body %}
+  <h1>Hier ist mal ein Beispiel, wie das aussehen kann</h1>
+  <!-- requires the context of _ul_list -->
+  <div class="container" id="beispielliste">
+    {% include 'partials/_ul_list.html' %}
+  </div>
+{% endblock body %}

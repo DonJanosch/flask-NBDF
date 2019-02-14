@@ -1,0 +1,8 @@
+.hoverable {
+  background-color: inherit;
+  transition-duration: 0.25s;
+}
+
+.hoverable:hover {
+  background-color: #B2B4B5;
+}
