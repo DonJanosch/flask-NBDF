@@ -100,6 +100,9 @@ def login():
     }
     return render_template('login.html',**context)
 
-# if __name__ == '__main__':
-#     socketio.run(app,debug=True)
+if __name__ == '__main__':
+    # print(f'PYTHON >>>> The copied dir lookes like this:\n')
+    # for l in os.walk(os.getcwd()):
+    #     print(l)
+    socketio.run(app,debug=True)
 #     app.run(debug=True) # TODO: Remove Debug!
