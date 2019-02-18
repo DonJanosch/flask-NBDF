@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  {% if title %}
+    {{ title }}
+  {% else %}
+    Blog-Posts
+  {% endif %}
+{% endblock title %}
+
+{% block body %}
+  <!-- _article.html requires the context of post -->
+  {% include "partials/_user_list.html" %}
+{% endblock body %}

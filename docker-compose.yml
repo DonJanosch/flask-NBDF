@@ -1,12 +1,22 @@
-web:
-  build: .
-  command: python -u server.py
-  ports:
-    - "5000:5000"
-  volumes:
-    - .:/app
-  links:
-    - db
-db:
-  image: mongo
-  restart: always
+version: "3"
+
+services:
+  mongo:
+    restart: always
+    image: mongo:3.0.2
+    command: "--smallfiles"
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db:/data/db
+
+  web:
+    build: ./website
+    volumes:
+      - ./website:/usr/src/app
+    restart: always
+    command: python -u run.py
+    ports:
+      - 80:5000
+    links:
+      - mongo

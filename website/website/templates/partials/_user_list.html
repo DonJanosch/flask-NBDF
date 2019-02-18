@@ -1,0 +1,9 @@
+<ul class="list-group">
+  {% for user in users %}
+    <li>
+      <h1>{{ user.firstname }} {{ user.lastname }}</h1>
+      <p>{{ user.password }}</p>
+      <p>{{ user.email }}</p>
+    </li>
+  {% endfor %}
+</ul>
