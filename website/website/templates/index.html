@@ -9,8 +9,5 @@
 {% endblock title %}
 
 {% block body %}
-  {% for post in posts %}
-    <!-- _article.html requires the context of post -->
-    {% include "partials/_article.html" %}
-  {% endfor %}
+  {% include "partials/_weather.html" %}
 {% endblock body %}

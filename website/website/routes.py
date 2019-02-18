@@ -1,3 +1,4 @@
+import random
 from flask import flash, redirect, url_for, request, render_template
 from datetime import datetime
 from flask_login import login_user
@@ -43,7 +44,11 @@ def example_fly_days():
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('index.html',posts=posts, title='test')
+    context = {
+        'title':'NBDF Homepage',
+        'weather':random.choice(['clouds','fog'])
+    }
+    return render_template('index.html',**context)
 
 @app.route('/kontakt')
 def about():
