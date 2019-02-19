@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  {% if title %}
+    {{ title }}
+  {% else %}
+    Calendar
+  {% endif %}
+{% endblock title %}
+
+{% block body %}
+  {% include "partials/_calendar.html" %}
+{% endblock body %}

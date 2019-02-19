@@ -13,7 +13,7 @@
     {% include "partials/_navbar.html" %}
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -25,19 +25,19 @@
           {% endwith %}
           {% block body %}{% endblock body %}
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
           <div class="content-section">
             <h3>Our Sidebar</h3>
             <p class="text-muted">
               <ul>
                 <li>Latest Posts</li>
                 <li>Announcements</li>
-                <li>Calendars</li>
+                <li>windenfahrers</li>
                 <li>etc</li>
               </ul>
             </p>
           </div>
-        </div>
+        </div> -->
       </div>
     </main>
     <footer class="footer">

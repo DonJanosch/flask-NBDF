@@ -27,3 +27,39 @@
   background-color: rgba(242, 38, 19, 1);
   box-shadow: 0px 0px 20px 0px rgba(231, 76, 60, 0.8);
 }
+
+.calendar {
+  text-align: center;
+}
+
+.calendar td {
+  padding: 3px;
+  margin: 0;
+}
+
+.calendar-cell {
+  background-color: gray;
+}
+
+.calendar-cell.Samstag {
+  background-color: orange;
+  border-radius: 5%;
+}
+
+.calendar-cell.Sonntag {
+  background-color: green;
+}
+
+.calendar-cell.empty {
+  background-color: white;
+}
+
+.calendar-cell.month, .calendar-cell.day-col {
+  background-color: lightgrey;
+}
+
+.calendar-cell:hover {
+  transition: 0.1s;
+  background-color: brown;
+  border-radius: 10%;
+}

@@ -7,8 +7,8 @@ services:
     command: "--smallfiles"
     ports:
       - 27017:27017
-    volumes:
-      - ./db:/data/db
+    # volumes:
+    #   - ./db:/data/db
 
   web:
     build: ./website

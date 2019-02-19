@@ -5,7 +5,8 @@ from flask_login import login_user
 
 from website import app, bcrypt, db, user, login_manager
 from website.forms import RegistrationForm, LoginForm
-from website.tools.calendar import make_example_set_of_assigned_fly_days
+from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
+from website.tools.calendar import calendar_columwise
 
 posts = [
     {
@@ -114,3 +115,10 @@ def get_user(lastname):
         return render_template('users.html',**context)
     else:
         return 'nichts gefunden'
+
+@app.route('/calendar')
+def calendar():
+    context = {
+        'calendar_columwise':calendar_columwise
+    }
+    return render_template('calendar.html',**context)
