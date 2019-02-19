@@ -8,20 +8,7 @@ from website.forms import RegistrationForm, LoginForm
 from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
 from website.tools.calendar import calendar_columwise
 
-posts = [
-    {
-        'author':'John Doe',
-        'title':'Blog Post 1',
-        'content':'First post content',
-        'date_posted': '01.01.2019',
-    },
-    {
-        'author':'Jan Macenka',
-        'title':'Wirklich wichtig',
-        'content':'Den hund noch füttern',
-        'date_posted': '01.01.2019',
-    },
-]
+possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -36,18 +23,20 @@ def exists(query):
 @app.route('/example')
 def example_fly_days():
     list_of_weekends, _ = make_example_set_of_assigned_fly_days()
+    weather = random.choice(possible_weather)
     context = {
         '_ul_list':list_of_weekends,
-        'title':'Beispielliste'
+        'title':'Beispielliste',
+        'weather':weather,
     }
     return render_template('example_fly_days.html',**context)
 
 @app.route('/')
-@app.route('/home')
 def home():
+    weather = random.choice(possible_weather)
     context = {
         'title':'NBDF Homepage',
-        'weather':random.choice(['clouds','fog'])
+        'weather': weather,
     }
     return render_template('index.html',**context)
 

@@ -1,6 +1,3 @@
-import locale
-locale.setlocale(locale.LC_TIME,("de","de"));
-
 from datetime import date, datetime
 year = datetime.now().year
 
