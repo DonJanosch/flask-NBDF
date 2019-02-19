@@ -8,7 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 #Set up the flask-app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(60)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
 #Mixins and extensions
 socketio = SocketIO(app)
