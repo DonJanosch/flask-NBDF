@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
-from website import user
+# from website import user
 
 class RegistrationForm(FlaskForm):
     firstname = StringField('Vorname', validators= [
@@ -26,28 +26,28 @@ class RegistrationForm(FlaskForm):
 
     submit = SubmitField('Registrieren')
 
-    def validate_firstname(self,firstname):
-        user_exists = user.find({
-            'firstname':firstname.data,
-            'lastname':self.lastname.data,
-        })
-        if len([u for u in user_exists])>0:
-            raise ValidationError('Dieses Mitglied existiert bereits.')
-
-    def validate_lastname(self,lastname):
-        user_exists = user.find({
-            'firstname':self.firstname.data,
-            'lastname':lastname.data,
-        })
-        if len([u for u in user_exists])>0:
-            raise ValidationError('Dieses Mitglied existiert bereits.')
-
-    def validate_email(self,email):
-        user_exists = user.find({
-            'email':email.data,
-        })
-        if len([u for u in user_exists])>0:
-            raise ValidationError('Diese Email-Addresse ist bereits vergeben.')
+    # def validate_firstname(self,firstname):
+    #     user_exists = user.find({
+    #         'firstname':firstname.data,
+    #         'lastname':self.lastname.data,
+    #     })
+    #     if len([u for u in user_exists])>0:
+    #         raise ValidationError('Dieses Mitglied existiert bereits.')
+    #
+    # def validate_lastname(self,lastname):
+    #     user_exists = user.find({
+    #         'firstname':self.firstname.data,
+    #         'lastname':lastname.data,
+    #     })
+    #     if len([u for u in user_exists])>0:
+    #         raise ValidationError('Dieses Mitglied existiert bereits.')
+    #
+    # def validate_email(self,email):
+    #     user_exists = user.find({
+    #         'email':email.data,
+    #     })
+    #     if len([u for u in user_exists])>0:
+    #         raise ValidationError('Diese Email-Addresse ist bereits vergeben.')
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators= [
