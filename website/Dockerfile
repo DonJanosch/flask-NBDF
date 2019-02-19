@@ -1,5 +1,6 @@
-FROM python:3.7-stretch
+FROM python:3.7-alpine3.9
 WORKDIR /usr/src/app
+RUN apk update && apk add build-base libffi-dev python-dev
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
