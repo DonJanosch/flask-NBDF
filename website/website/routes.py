@@ -1,7 +1,7 @@
 import random
 from flask import flash, redirect, url_for, request, render_template
 from datetime import datetime
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 
 from website import app, bcrypt, db, login_manager
 from website.models import User
@@ -11,9 +11,9 @@ from website.tools.calendar import calendar_columwise
 
 possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
 
-@app.route('/examples')
 @app.route('/example')
-def example_fly_days():
+@login_required
+def example():
     list_of_weekends, _ = make_example_set_of_assigned_fly_days()
     weather = random.choice(possible_weather)
     context = {
@@ -21,7 +21,7 @@ def example_fly_days():
         'title':'Beispielliste',
         'weather':weather,
     }
-    return render_template('example_fly_days.html',**context)
+    return render_template('example.html',**context)
 
 @app.route('/')
 def home():
@@ -69,7 +69,8 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('home'))
+            next_page = request.args.get('next','home')
+            return redirect(url_for(next_page.strip('/')))
         flash('Das hat nicht geklappt. Email oder Password sind nicht korrekt.', 'danger')
     context = {
         'form':form,
@@ -78,6 +79,7 @@ def login():
     return render_template('login.html',**context)
 
 @app.route('/logout')
+@login_required
 def logout():
     flash(f'Du bist ausgeloggt. Bis bald, {current_user.firstname}.','info')
     logout_user()
@@ -91,6 +93,7 @@ def calendar():
     return render_template('calendar.html',**context)
 
 @app.route('/account')
+@login_required
 def account():
     context = {
         'title':f'{current_user.firstname}\'s Account',

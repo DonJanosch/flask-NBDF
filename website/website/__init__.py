@@ -15,6 +15,7 @@ app.config['SECRET_KEY'] = secrets.token_hex(60)
 socketio = SocketIO(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
 
 #Set up the Database
 DATABASE_TYPE = os.environ['DATABASE_TYPE']
