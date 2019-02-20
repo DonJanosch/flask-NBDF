@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from website.models import User
@@ -51,3 +52,18 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Eingeloggt bleiben')
 
     submit = SubmitField('Einloggen')
+
+class UpdateAccountForm(FlaskForm):
+    email = StringField('Email', validators= [
+                            DataRequired(),
+                            Email()])
+
+    wing = StringField('Schirm')
+
+    submit = SubmitField('Anpassen')
+
+    def validate_email(self,email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Diese Emailaddresse ist bereits registriert.')

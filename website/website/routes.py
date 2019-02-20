@@ -5,36 +5,34 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 from website import app, bcrypt, db, login_manager
 from website.models import User
-from website.forms import RegistrationForm, LoginForm
+from website.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
 from website.tools.calendar import calendar_columwise
 
 possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
 
+context = {
+    'copyright_year':datetime.now().year,
+}
+
 @app.route('/example')
 @login_required
 def example():
     list_of_weekends, _ = make_example_set_of_assigned_fly_days()
-    weather = random.choice(possible_weather)
-    context = {
-        '_ul_list':list_of_weekends,
-        'title':'Beispielliste',
-        'weather':weather,
-    }
+    context['_ul_list'] = list_of_weekends
+    context['title'] = 'Beispielliste'
+    context['weather'] = random.choice(possible_weather)
     return render_template('example.html',**context)
 
 @app.route('/')
 def home():
-    weather = random.choice(possible_weather)
-    context = {
-        'title':'NBDF Homepage',
-        'weather': weather,
-    }
+    context['title'] = 'NBDF Homepage'
+    context['weather'] = random.choice(possible_weather)
     return render_template('index.html',**context)
 
 @app.route('/kontakt')
 def about():
-    return render_template('index.html')
+    return render_template('about.html',**context)
 
 @app.route('/anmelden', methods=['POST', 'GET'])
 def register():
@@ -53,11 +51,10 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'Willkommen {form.firstname.data}, du bist jetzt registriert!','success')
-        return redirect(url_for('login'))
-    context = {
-        'form':form,
-        'title':'Registrieren',
-    }
+        #context['user_email'] = form.email.data
+        return redirect(url_for('login',**context))
+    context['form'] = form
+    context['title'] = 'Registrieren'
     return render_template('register.html',**context)
 
 @app.route('/login', methods=['POST','GET'])
@@ -72,10 +69,8 @@ def login():
             next_page = request.args.get('next','home')
             return redirect(url_for(next_page.strip('/')))
         flash('Das hat nicht geklappt. Email oder Password sind nicht korrekt.', 'danger')
-    context = {
-        'form':form,
-        'title':'Einloggen',
-    }
+    context['form'] = form
+    context['title'] = 'Einloggen'
     return render_template('login.html',**context)
 
 @app.route('/logout')
@@ -87,15 +82,13 @@ def logout():
 
 @app.route('/calendar')
 def calendar():
-    context = {
-        'calendar_columwise':calendar_columwise
-    }
+    context['calendar_columwise'] = calendar_columwise
     return render_template('calendar.html',**context)
 
 @app.route('/account')
 @login_required
 def account():
-    context = {
-        'title':f'{current_user.firstname}\'s Account',
-    }
-    return render_template('account.html')
+    # context['form'] = UpdateAccountForm()
+    context['title'] = f'{current_user.firstname}\'s Account'
+    context['image_file'] = url_for('static', filename=f'profile_pics/{current_user.image_file}')
+    return render_template('account.html',**context)

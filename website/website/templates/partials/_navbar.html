@@ -7,9 +7,15 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
         <div class="navbar-nav mr-auto">
-          <a class="nav-item nav-link" href="{{ url_for('about') }}">Kontakt</a>
+          <a class="nav-item nav-link" href="#Schleppinfo">Siegritz aktuell</a>
+          <a class="nav-item nav-link" href="#Siegritz_Wetter">Flugwetter Siegritz</a>
+          {% if current_user.is_authenticated %}
+          <a class="nav-item nav-link" href="#persönlicher_schleppkalender">Schleppkalender</a>
           <a class="nav-item nav-link" href="{{ url_for('example') }}">Test</a>
-          <a class="nav-item nav-link" href="{{ url_for('calendar') }}">Kalender</a>
+          {% else %}
+          <a class="nav-item nav-link" href="{{ url_for('calendar') }}">Schleppkalender</a>
+          {% endif %}
+          <a class="nav-item nav-link" href="{{ url_for('about') }}">Kontakt</a>
         </div>
         <!-- Navbar Right Side --->
         <div class="navbar-nav">

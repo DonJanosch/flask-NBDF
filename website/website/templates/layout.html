@@ -14,39 +14,42 @@
     <title>{% block title %}Homepage{% endblock title %}</title>
   </head>
   <body scroll="no" style="overflow: hidden">
-    {% include "partials/_navbar.html" %}
-    <main role="main" class="container" style="z-index: 100;">
-      <div class="row">
-        <div class="col-md-8">
-          {% with messages = get_flashed_messages(with_categories=true) %}
+    <div class="body-wraper">
+      {% include "partials/_navbar.html" %}
+      <main role="main" class="container" style="z-index: 100;">
+        <div class="row">
+          <div class="col-md-12">
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
-          {% endwith %}
-          {% block body %}{% endblock body %}
-        </div>
-        <!-- <div class="col-md-4">
-          <div class="content-section">
-            <h3>Our Sidebar</h3>
-            <p class="text-muted">
-              <ul>
-                <li>Latest Posts</li>
-                <li>Announcements</li>
-                <li>windenfahrers</li>
-                <li>etc</li>
-              </ul>
-            </p>
+            {% endwith %}
+            {% block body %}{% endblock body %}
           </div>
-        </div> -->
-      </div>
-    </main>
-    {% include "partials/_weather_full_width.html" %}
+          <!-- <div class="col-md-4">
+          <div class="content-section">
+          <h3>Our Sidebar</h3>
+          <p class="text-muted">
+          <ul>
+          <li>Latest Posts</li>
+          <li>Announcements</li>
+          <li>windenfahrers</li>
+          <li>etc</li>
+        </ul>
+      </p>
+    </div>
+  </div> -->
+</div>
+</main>
+{% include "partials/_weather_full_width.html" %}
+    </div>
     <footer class="footer">
       {% block footer %}{% endblock footer %}
+      {% include "partials/_footer.html" %}
     </footer>
     {% if weather %}
     <script src="{{ url_for('static', filename="js/")}}{{ weather }}.js"></script>
