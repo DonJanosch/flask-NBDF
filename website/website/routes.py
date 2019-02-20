@@ -41,13 +41,15 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        new_user = {
+        user_data = {
             'firstname':form.firstname.data,
             'lastname':form.lastname.data,
             'email':form.email.data,
             'password':hashed_password
         }
-        #user.insert_one(new_user)
+        user = User(**user_data)
+        db.session.add(user)
+        db.session.commit()
         flash(f'Willkommen {form.firstname.data}, du bist jetzt registriert!','success')
         return redirect(url_for('login'))
     context = {
@@ -60,13 +62,11 @@ def register():
 def login():
     form = LoginForm()
     if request.method == 'POST':
-        if bcrypt.check_password_hash(user.find_one({'email':form.email.data})['password'],form.password.data):
-            #logged_in_user = user.find_one({'email':form.email.data})
-            #flash(f'Willkommen {logged_in_user["firstname"]}.','success')
-            #login_user(logged_in_user, remember=form.remember.data)
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
             return redirect(url_for('home'))
-        else:
-            flash('Das hat nicht geklappt.Email oder Password sind nicht korrekt.', 'danger')
+        flash('Das hat nicht geklappt. Email oder Password sind nicht korrekt.', 'danger')
     context = {
         'form':form,
         'title':'Einloggen',

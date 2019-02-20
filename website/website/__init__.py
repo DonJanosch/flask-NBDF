@@ -4,6 +4,8 @@ from flask_socketio import SocketIO
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 
 #Set up the flask-app
 app = Flask(__name__)
@@ -28,3 +30,7 @@ bcrypt = Bcrypt(app)
 
 #Construct dependent things
 from website import routes
+migrate = Migrate(app, db)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+db.create_all()

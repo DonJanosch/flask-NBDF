@@ -11,7 +11,6 @@ services:
       MYSQL_DATABASE: ${DATABASE_NAME}
     volumes:
       - DBdatavolume:/var/lib/mysql
-      #- ./db:/var/lib/mysql:rw
 
   db-client:
     image: "${DATABASE_TYPE}:${DATABASE_TYPE_DOCKER_VERSION}"
