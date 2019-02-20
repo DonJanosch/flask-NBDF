@@ -1,7 +1,7 @@
 import random
 from flask import flash, redirect, url_for, request, render_template
 from datetime import datetime
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user
 
 from website import app, bcrypt, db, login_manager
 from website.models import User
@@ -38,6 +38,8 @@ def about():
 
 @app.route('/anmelden', methods=['POST', 'GET'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -60,6 +62,8 @@ def register():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = LoginForm()
     if request.method == 'POST':
         user = User.query.filter_by(email=form.email.data).first()
@@ -73,9 +77,22 @@ def login():
     }
     return render_template('login.html',**context)
 
+@app.route('/logout')
+def logout():
+    flash(f'Du bist ausgeloggt. Bis bald, {current_user.firstname}.','info')
+    logout_user()
+    return redirect(url_for('home'))
+
 @app.route('/calendar')
 def calendar():
     context = {
         'calendar_columwise':calendar_columwise
     }
     return render_template('calendar.html',**context)
+
+@app.route('/account')
+def account():
+    context = {
+        'title':f'{current_user.firstname}\'s Account',
+    }
+    return render_template('account.html')
