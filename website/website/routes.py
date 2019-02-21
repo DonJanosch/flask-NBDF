@@ -28,7 +28,7 @@ def example():
 def home():
     context['title'] = 'NBDF Homepage'
     context['weather'] = random.choice(possible_weather)
-    return render_template('index.html',**context)
+    return render_template('home.html',**context)
 
 @app.route('/kontakt')
 def about():
@@ -51,8 +51,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'Willkommen {form.firstname.data}, du bist jetzt registriert!','success')
-        #context['user_email'] = form.email.data
-        return redirect(url_for('login',**context))
+        return redirect(url_for('login'))
     context['form'] = form
     context['title'] = 'Registrieren'
     return render_template('register.html',**context)

@@ -80,3 +80,13 @@
   width: 100vw;
   height: 100vh;
 }
+
+.background-opake {
+  transition-duration: 0.2s;
+  background-color: rgba(191, 183, 165, 0.2)
+}
+
+.background-opake:hover {
+  transition-duration: 0.2s;
+  background-color: rgba(191, 183, 165, 0.3);
+}
