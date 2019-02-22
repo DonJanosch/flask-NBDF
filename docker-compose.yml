@@ -30,6 +30,8 @@ services:
       - "${WEB_PORT}:5000"
     links:
       - db
+    depends_on:
+      - db
 
 volumes:
   DBdatavolume:
