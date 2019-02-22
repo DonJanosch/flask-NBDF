@@ -3,8 +3,8 @@ from flask import flash, redirect, url_for, request, render_template
 from datetime import datetime
 from flask_login import login_user, logout_user, login_required, current_user
 
-from website import app, bcrypt, db, login_manager
-from website.models import User
+from website import app, db, bcrypt
+from website.models import admin, login_manager, User
 from website.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
 from website.tools.calendar import calendar_columwise
@@ -51,7 +51,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'Willkommen {form.firstname.data}, du bist jetzt registriert!','success')
-        return redirect(url_for('login'))
+        #context['user_email'] = form.email.data
+        return redirect(url_for('login',**context))
     context['form'] = form
     context['title'] = 'Registrieren'
     return render_template('register.html',**context)
