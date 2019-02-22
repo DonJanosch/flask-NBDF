@@ -1,6 +1,5 @@
 import os, secrets
 from flask import Flask, redirect, url_for
-from flask_socketio import SocketIO
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
@@ -9,7 +8,7 @@ from flask_migrate import Migrate, MigrateCommand
 #Set up the flask-app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(60)
-socketio = SocketIO(app)
+
 
 #Set up the Database
 DATABASE_TYPE = os.environ['DATABASE_TYPE']

@@ -11,9 +11,9 @@ from website.tools.calendar import calendar_columwise
 
 possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
 
-context = {
-    'copyright_year':datetime.now().year,
-}
+# Setting some global avaliable context wich is not dependent on the view.
+context = dict()
+context['copyright_year'] = datetime.now().year
 
 @app.route('/example')
 @login_required
