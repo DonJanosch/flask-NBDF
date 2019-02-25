@@ -8,16 +8,22 @@ from website.models import admin, login_manager, User
 from website.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
 from website.tools.calendar import calendar_columwise
+from website.tools.utils import load_script_from_filename
 
 possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
 
 # Setting some global avaliable context wich is not dependent on the view.
-context = dict()
-context['copyright_year'] = datetime.now().year
+def global_context():
+    context = dict()
+    context['copyright_year'] = datetime.now().year
+    context['header_scripts'] = []
+    context['body_scripts'] = 'jquery-3.3.1.min.js popper.min.js bootstrap.bundle.min.js'.split(' ')
+    return context
 
 @app.route('/example')
 @login_required
 def example():
+    context = global_context()
     list_of_weekends, _ = make_example_set_of_assigned_fly_days()
     context['_ul_list'] = list_of_weekends
     context['title'] = 'Beispielliste'
@@ -26,16 +32,19 @@ def example():
 
 @app.route('/')
 def home():
+    context = global_context()
     context['title'] = 'NBDF Homepage'
     context['weather'] = random.choice(possible_weather)
     return render_template('home.html',**context)
 
 @app.route('/kontakt')
 def about():
+    context = global_context()
     return render_template('about.html',**context)
 
 @app.route('/anmelden', methods=['POST', 'GET'])
 def register():
+    context = global_context()
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegistrationForm()
@@ -59,6 +68,7 @@ def register():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
+    context = global_context()
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
@@ -67,6 +77,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next','home')
+            flash(f'Willkommen {current_user.firstname}.','success')
             return redirect(url_for(next_page.strip('/')))
         flash('Das hat nicht geklappt. Email oder Password sind nicht korrekt.', 'danger')
     context['form'] = form
@@ -76,19 +87,30 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    context = global_context()
     flash(f'Du bist ausgeloggt. Bis bald, {current_user.firstname}.','info')
     logout_user()
     return redirect(url_for('home'))
 
 @app.route('/calendar')
 def calendar():
+    context = global_context()
     context['calendar_columwise'] = calendar_columwise
     return render_template('calendar.html',**context)
 
 @app.route('/account')
 @login_required
 def account():
+    context = global_context()
     # context['form'] = UpdateAccountForm()
     context['title'] = f'{current_user.firstname}\'s Account'
     context['image_file'] = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     return render_template('account.html',**context)
+
+@app.route('/schleppinfo')
+def schleppinfo():
+    context = global_context()
+    context['header_scripts'] += 'socket.io.min.js'.split(' ')
+    context['body_scripts'] += 'socketio_infochat.js'.split(' ')
+    context['weather'] = random.choice(possible_weather)
+    return render_template('schleppinfo.html',**context)

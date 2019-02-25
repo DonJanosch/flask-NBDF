@@ -4,11 +4,11 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+from flask_socketio import SocketIO, send
 
 #Set up the flask-app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(60)
-
 
 #Set up the Database
 DATABASE_TYPE = os.environ['DATABASE_TYPE']
@@ -26,3 +26,9 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 db.create_all()
+
+#Construct SocketIOsocketio = SocketIO(app)
+socketio = SocketIO(app)
+from website.socketio import *
+
+print('Loaded website')
