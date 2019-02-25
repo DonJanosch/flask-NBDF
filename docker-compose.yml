@@ -24,14 +24,17 @@ services:
       - .env
     volumes:
       - ./website:/usr/src/app
-    restart: always
-    command: "python -u run.py"
     ports:
       - "${WEB_PORT}:5000"
+    entrypoint:
+      - flask
+      - run
+      - --host=0.0.0.0
     links:
       - db
     depends_on:
       - db
+    restart: always
 
 volumes:
   DBdatavolume:
