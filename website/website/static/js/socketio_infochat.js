@@ -6,7 +6,6 @@ infochat.on('connect', function(){
 
 infochat.on('message', function(msg){
   $('#infochat').append('<li>'+msg+'</li>')
-  console.log('Recieved message',msg);
 });
 
 $('#infochat_sendbutton').on('click', function(){
