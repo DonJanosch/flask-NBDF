@@ -113,5 +113,4 @@ def schleppinfo():
     context['header_scripts'] += 'socket.io.min.js'.split(' ')
     context['body_scripts'] += 'socketio_infochat.js'.split(' ')
     context['weather'] = random.choice(possible_weather)
-    print('etwas')
     return render_template('schleppinfo.html',**context)

@@ -13,7 +13,7 @@ var sendTextBox = function(){
 }
 
 infochat.on('connect', function(){
-  infochat.emit('message','User connected');
+  infochat.emit('connect','User connected');
 });
 
 infochat.on('message', function(msg){
