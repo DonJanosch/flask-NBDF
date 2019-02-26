@@ -1,14 +1,26 @@
 // Script to handle SocketIO-Connection to Server
 var infochat = io.connect('http://' + document.domain + ':' + location.port+'/infochat');
+
+var addToDisplay = function(text){
+  $('#infochat').append('<li>'+text+'</li>');
+}
+
+var sendTextBox = function(){
+  let msg = $('#infochat_textbox').val();
+  infochat.send(msg);
+  console.log('Sent message, ',msg);
+  $('#infochat_textbox').val('');
+}
+
 infochat.on('connect', function(){
   infochat.emit('message','User connected');
 });
 
 infochat.on('message', function(msg){
-  $('#infochat').append('<li>'+msg+'</li>')
+  addToDisplay(msg);
+  console.log('Recieved message, ',msg);
 });
 
 $('#infochat_sendbutton').on('click', function(){
-  infochat.send($('#infochat_textbox').val());
-  $('#infochat_textbox').val('');
+  sendTextBox();
 });
