@@ -5,10 +5,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_socketio import SocketIO, send
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 
 #Set up the flask-app
 app = Flask(__name__)
+app.config.from_pyfile('mailserver.cfg')
 app.config['SECRET_KEY'] = secrets.token_hex(60)
+mail = Mail(app)
+serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 #Set up the Database
 DATABASE_TYPE = os.environ['DATABASE_TYPE']

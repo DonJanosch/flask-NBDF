@@ -1,9 +1,11 @@
-import random
-from flask import flash, redirect, url_for, request, render_template
+import random, os
+from flask import flash, redirect, url_for, request, render_template, Markup
 from datetime import datetime
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 
-from website import app, db, bcrypt
+from website import app, db, bcrypt, mail, serializer
 from website.models import admin, login_manager, User
 from website.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
@@ -11,6 +13,7 @@ from website.tools.calendar import calendar_columwise
 from website.tools.utils import load_script_from_filename
 
 possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
+server_IP = os.environ['BACKEND_IP'].strip('"')
 
 # Setting some global avaliable context wich is not dependent on the view.
 def global_context():
@@ -50,16 +53,27 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        email = form.email.data
+        token = serializer.dumps(email, salt='email-confirmation')
+        confirmation_link = url_for('confirm_email', token=token, _external=True)
         user_data = {
             'firstname':form.firstname.data,
             'lastname':form.lastname.data,
             'email':form.email.data,
-            'password':hashed_password
+            'password':hashed_password,
+            'confirmation_link':confirmation_link,
         }
         user = User(**user_data)
+        msg = Message(
+        'NBDF Anmeldung - Email bestätigen',
+        sender=app.config['MAIL_USERNAME'],
+        recipients=[email]
+        )
+        msg.body = f'Willkommen auf der NBDF Seite.\n\nBitte benutze diesen Link um deinen Account zu bestätigen: {confirmation_link.replace("localhost",server_IP)}\n\nBitte antworte nicht direkt auf diese Email.'
+        mail.send(msg)
         db.session.add(user)
         db.session.commit()
-        flash(f'Willkommen {form.firstname.data}, du bist jetzt registriert!','success')
+        flash(f'Willkommen {form.firstname.data}, bitte bestätige die Email für deinen Account.','success')
         #context['user_email'] = form.email.data
         return redirect(url_for('login',**context))
     context['form'] = form
@@ -74,6 +88,9 @@ def login():
     form = LoginForm()
     if request.method == 'POST':
         user = User.query.filter_by(email=form.email.data).first()
+        if not user.is_validated:
+            flash(Markup(f'Bitte bestätige erst deine Account, über den Link aus der Email. \n<a href="{url_for("resend_confirmation_link",email=user.email)}">Nochmal zusenden</a>'), 'danger')
+            return redirect(url_for('home'))
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next','home')
@@ -83,6 +100,19 @@ def login():
     context['form'] = form
     context['title'] = 'Einloggen'
     return render_template('login.html',**context)
+
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = serializer.loads(token, salt='email-confirmation', max_age=2*24*60*60)
+        user = User.query.filter_by(email=email).first()
+    except:
+        flash('Der Bestätigungslink is abgelaufen','danger')
+        return redirect(url_for('home'))
+    user.is_validated = True
+    db.session.commit()
+    flash(f'Dein Account ist jetzt freigeschaltet {user.firstname}. Herzlich Willkommen.','success')
+    return redirect(url_for('login'))
 
 @app.route('/logout')
 @login_required
@@ -114,3 +144,24 @@ def schleppinfo():
     context['body_scripts'] += 'socketio_infochat.js'.split(' ')
     context['weather'] = random.choice(possible_weather)
     return render_template('schleppinfo.html',**context)
+
+@app.route('/resend_confirmation_link/<email>')
+def resend_confirmation_link(email):
+    user = User.query.filter_by(email=email).first()
+    if user.is_validated:
+        # Email-Spam verhindern
+        return redirect(url_for('login'))
+    email = user.email
+    token = serializer.dumps(email, salt='email-confirmation')
+    confirmation_link = url_for('confirm_email', token=token, _external=True)
+    user.confirmation_link = confirmation_link
+    db.session.commit()
+    msg = Message(
+    'NBDF Anmeldung - Email bestätigen',
+    sender=app.config['MAIL_USERNAME'],
+    recipients=[email]
+    )
+    msg.body = f'Willkommen auf der NBDF Seite.\n\nBitte benutze diesen Link um deinen Account zu bestätigen: {confirmation_link.replace("localhost",server_IP)}\n\nBitte antworte nicht direkt auf diese Email.'
+    mail.send(msg)
+    flash('Bestätigungs-Email erneut zugesandt','info')
+    return redirect(url_for('login'))

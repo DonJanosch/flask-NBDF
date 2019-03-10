@@ -17,6 +17,9 @@ class User(db.Model, UserMixin):
     is_member = db.Column(db.Boolean, default=False)
     is_windenfahrer = db.Column(db.Boolean, default=False)
     is_ewf = db.Column(db.Boolean, default=False)
+    is_validated = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
+    confirmation_link = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
         return f'User({self.firstname}, {self.lastname}, {self.email}, {self.image_file})'
