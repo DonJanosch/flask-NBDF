@@ -1,14 +1,7 @@
-Alle #TODO Kommentare aufsuchen und bearbeiten
+## TODOs
 
-Docker-Aufsetzen
-  Ubuntu
-  Flask
-  Flask-MontoAlchemy (MongoDB)
-  flask-wtf (Forms)
-  flask-socketio (Websockets)
-  pymongo
-  MongoDB (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
-  Bootstrap4
+Registrierung so ändern, dass User erst in DB geschrieben wird, wenn Validation-Link bestätigt wird.
+User in einer Liste als pending zwischenspeichern.
 
-MongoDB-einrichten
-  https://pythonhosted.org/Flask-MongoAlchemy/
+Windenfahrer kann neuen, unbekannten Gast als User anlegen => Vereinfachtes Validierungs-Verfahren ohne email.
+Update-Funktion für so erstellte User machen, im Admin-Bereich.

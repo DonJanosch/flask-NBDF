@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>126</y>
+      <w>297</w>
+      <h>324</h>
+    </coordinates>
+    <panel_attributes>User
+--
+id : Integer
+gewicht : Integer
+is_validated : Boolean
+is_admin : Boolean
+firstname : String
+lastname : String
+email : String
+image_file : String
+password : Hash+Salt
+pilotType : PilotType
+userType : UserType
+schlepps : list(Schlep)
+--
+incrementSchlepp()
+updateUser(...)
+setAllPaid(from : datetime, till : datetime) {alle Schlepps gezahlt setzen}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>126</y>
+      <w>243</w>
+      <h>324</h>
+    </coordinates>
+    <panel_attributes>Tag
+--
+DayCanceled : Bool
+WhinchingActive : Bool
+Datum : DateTime
+Windenfahrer : list(User)
+Helfer : list(User)
+interestedPilots : list(User)
+pilotsAtSite : list(User) {ZurAbrechnung}
+--
+getUsers() : list(User)
+addWindenfahrer(User) : void
+removeWindenfahrer(User) : void
+addUserAtSite(User)
+addUserAtSite(list(User)) {mit Checkboxen von interestedPilots}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>477</y>
+      <w>297</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>Schlep
+--
+datum : datetime
+paid_at : datetime {default=-1}
+windenfahrer : Integer
+--
+setPaid() {set paied_at to datetime.now()}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>837</x>
+      <y>99</y>
+      <w>297</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>EmailNotifier
+--
+MessageNotifyWindenfahrer : list(string)
+MessageType : Enum
+--
+send(email : string, messageType : Int)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>864</x>
+      <y>459</y>
+      <w>234</w>
+      <h>243</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Enumeration&gt;&gt;
+UserType
+--
+WindenfahrerEWF
+WindenfahrerGSDR
+WindenfahrerDR
+WindenfahrerGS
+Helfer
+Member
+Guest</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>495</y>
+      <w>234</w>
+      <h>243</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Enumeration&gt;&gt;
+PilotType
+--
+Gleitschirm
+Drache
+GleitschirmDrache</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
