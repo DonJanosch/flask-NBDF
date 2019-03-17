@@ -13,7 +13,6 @@ class PilotType(enum.Enum):
     Drache = 'Drache'
     GleitschirmDrache = 'GleitschirmDrache'
     Fußgänger = 'Fußgänger'
-)
 
 UserType = (
     'WinchOperatorEWF',
