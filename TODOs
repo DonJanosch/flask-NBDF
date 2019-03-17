@@ -5,3 +5,8 @@ User in einer Liste als pending zwischenspeichern.
 
 Windenfahrer kann neuen, unbekannten Gast als User anlegen => Vereinfachtes Validierungs-Verfahren ohne email.
 Update-Funktion für so erstellte User machen, im Admin-Bereich.
+
+Disclaimer einbauen
+
+Seite mit "Zeit mir alle Daten über mich", einem Download und einem Löschen Button einfügen. Erklären, was
+passiert, wenn auf Löschen gedrückt wird.

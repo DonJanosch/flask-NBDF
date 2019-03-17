@@ -36,7 +36,7 @@ def example():
 @app.route('/')
 def home():
     context = global_context()
-    context['title'] = 'NBDF Homepage'
+    context['title'] = 'NBDF Schlepp-App'
     context['weather'] = random.choice(possible_weather)
     return render_template('home.html',**context)
 

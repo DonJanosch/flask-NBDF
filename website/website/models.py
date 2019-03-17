@@ -1,3 +1,5 @@
+import enum
+
 from datetime import datetime
 from flask import redirect, url_for
 from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user
@@ -5,6 +7,23 @@ from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 
 from website import app, db
+
+class PilotType(enum.Enum):
+    Gleitschirm = 'Gleitschirm'
+    Drache = 'Drache'
+    GleitschirmDrache = 'GleitschirmDrache'
+    Fußgänger = 'Fußgänger'
+)
+
+UserType = (
+    'WinchOperatorEWF',
+    'WinchOperatorGSDR',
+    'WinchOperatorDR',
+    'WinchOperatorGS',
+    'Helper',
+    'Member',
+    'Guest',
+)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
