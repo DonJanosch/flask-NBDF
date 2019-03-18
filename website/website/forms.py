@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeField
+from wtforms.fields.html5 import DateTimeLocalField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Required
 from website.models import User
 
 class RegistrationForm(FlaskForm):
@@ -67,3 +68,11 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Diese Emailaddresse ist bereits registriert.')
+
+class RegisterNotificationForm(FlaskForm):
+    topic = StringField('Topic', validators=[DataRequired()])
+    message = StringField('Message', validators=[DataRequired()])
+    #notification_time = DateTimeField('Notification Time', validators=[DataRequired()])
+    #notification_time = StringField('Notification Time', validators=[DataRequired()])
+    notification_time = DateTimeLocalField('Pick a time to be notified.', format='%m/%d/%y', validators=[DataRequired()])
+    submit = SubmitField('Eintragen')

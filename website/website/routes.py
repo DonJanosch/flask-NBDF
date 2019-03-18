@@ -7,10 +7,11 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignat
 
 from website import app, db, bcrypt, mail, serializer
 from website.models import admin, login_manager, User
-from website.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from website.forms import RegistrationForm, LoginForm, UpdateAccountForm, RegisterNotificationForm
 from website.tools.windenfahrer import make_example_set_of_assigned_fly_days
 from website.tools.calendar import calendar_columwise
 from website.tools.utils import load_script_from_filename
+from website.notifications import resolve_datetime, schedule_new_email
 
 possible_weather = ['clouds']#,'fog','thunderstorm','sunshine']
 server_IP = os.environ['BACKEND_IP'].strip('"')
@@ -22,6 +23,25 @@ def global_context():
     context['header_scripts'] = []
     context['body_scripts'] = 'jquery-3.3.1.min.js popper.min.js bootstrap.bundle.min.js'.split(' ')
     return context
+
+@app.route('/register_notification', methods=['POST', 'GET'])
+@login_required
+def register_notification():
+    context = global_context()
+    form = RegisterNotificationForm()
+    if form.validate_on_submit():
+        topic = form.topic.data
+        message = form.message.data
+        notification_time = resolve_datetime(form.notification_time)
+        schedule_new_email(topic, message, notification_time)
+        flash(f'Registered Email for {current_user.email} to be sent at {notification_time}','success')
+        return redirect(url_for('register_notification',**context))
+    elif request.method == 'POST':
+        flash(f'Something went wrong','warning')
+        return redirect(url_for('register_notification',**context))
+    context['form'] = form
+    context['title'] = 'Register Notification'
+    return render_template('register_notification.html',**context)
 
 @app.route('/example')
 @login_required

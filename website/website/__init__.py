@@ -7,6 +7,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_socketio import SocketIO, send
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 #Set up the flask-app
 app = Flask(__name__)
@@ -24,6 +25,10 @@ HOSTNAME = 'db' # Used with docker-compose, is the name of the db-service
 app.config['SQLALCHEMY_DATABASE_URI'] = f'{DATABASE_TYPE}://{USER}:{PASSWORD}@{HOSTNAME}/{DATABASE_NAME}'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+
+#Construct the email-scheduler-process
+email_scheduler = BlockingScheduler()
+email_scheduler.add_jobstore('sqlalchemy', url=app.config['SQLALCHEMY_DATABASE_URI'])
 
 #Construct dependent things
 from website import routes

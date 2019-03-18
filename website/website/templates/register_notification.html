@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  {% if title %}
+    {{ title }}
+  {% else %}
+    Register Notification
+  {% endif %}
+{% endblock title %}
+
+{% block body %}
+<form action="{{ url_for('register_notification') }}" method="post">
+  <div class="form-group">
+    {{ form.topic.label }}
+    {{ form.topic(class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ form.message.label }}
+    {{ form.message(class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ form.notification_time.label }}
+    {{ form.notification_time }}
+  </div>
+  <div class="form-group">
+    {{ form.submit(class="btn btn-outline-info")}}
+  </div>
+</form>
+{% endblock body %}
