@@ -4,7 +4,14 @@ Registrierung so ändern, dass User erst in DB geschrieben wird, wenn Validation
 User in einer Liste als pending zwischenspeichern.
 
 Windenfahrer kann neuen, unbekannten Gast als User anlegen => Vereinfachtes Validierungs-Verfahren ohne email.
-Update-Funktion für so erstellte User machen, im Admin-Bereich.
+Update-Funktion für so erstellte User machen, im Admin-Bereich. Admin Bereich geschützt machen.
+
+Startseite mit zwei Ampeln, eine für den aktuellen Tag: Grün = es wird geschleppt, Orange = Es wird gerade nicht geschleppt z.B. wegen Wetter, Rot = Kein Schleppbetrieb.
+Zweite Ampel für Folgetag: Grün = Es wird geschleppt, Orange = Unsicher, Rot = Schlepp ist abgesagt.
+
+
+
+HTTPS Zertifikat über Cert-Bot mit Load-Balancer einfügen.
 
 Disclaimer einbauen
 
