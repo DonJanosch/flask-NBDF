@@ -94,11 +94,11 @@ def login():
             if not user.is_validated:
                 flash(Markup(f'Bitte bestätige erst deine Account, über den Link aus der Email. \n<a href="{url_for("resend_confirmation_link",email=user.email)}">Nochmal zusenden</a>'), 'danger')
                 return redirect(url_for('home'))
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next','home')
-            flash(f'Willkommen {current_user.firstname}.','success')
-            return redirect(url_for(next_page.strip('/')))
+            if user and bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                next_page = request.args.get('next','home')
+                flash(f'Willkommen {current_user.firstname}.','success')
+                return redirect(url_for(next_page.strip('/')))
         flash('Das hat nicht geklappt. Email oder Password sind nicht korrekt.', 'danger')
     context['form'] = form
     context['title'] = 'Einloggen'
