@@ -55,7 +55,8 @@ class Post(db.Model, UserMixin):
 #Configure the Admin-Area
 class MyModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated
+        if current_user:
+            return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login'))
@@ -63,7 +64,8 @@ class MyModelView(ModelView):
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         # TODO: User-Classes deffinieren, damit nur Admins die Seite sehen können.
-        return current_user.is_authenticated
+        if current_user:
+            return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login'))

@@ -48,8 +48,9 @@ def about():
 @app.route('/anmelden', methods=['POST', 'GET'])
 def register():
     context = global_context()
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
+    if current_user:
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -83,8 +84,9 @@ def register():
 @app.route('/login', methods=['POST','GET'])
 def login():
     context = global_context()
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
+    if current_user:
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
     form = LoginForm()
     if request.method == 'POST':
         user = User.query.filter_by(email=form.email.data).first()
