@@ -48,8 +48,9 @@ def about():
 @app.route('/anmelden', methods=['POST', 'GET'])
 def register():
     context = global_context()
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
+    if current_user:
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -83,14 +84,16 @@ def register():
 @app.route('/login', methods=['POST','GET'])
 def login():
     context = global_context()
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
+    if current_user:
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
     form = LoginForm()
     if request.method == 'POST':
         user = User.query.filter_by(email=form.email.data).first()
-        if not user.is_validated:
-            flash(Markup(f'Bitte bestätige erst deine Account, über den Link aus der Email. \n<a href="{url_for("resend_confirmation_link",email=user.email)}">Nochmal zusenden</a>'), 'danger')
-            return redirect(url_for('home'))
+        if user:
+            if not user.is_validated:
+                flash(Markup(f'Bitte bestätige erst deine Account, über den Link aus der Email. \n<a href="{url_for("resend_confirmation_link",email=user.email)}">Nochmal zusenden</a>'), 'danger')
+                return redirect(url_for('home'))
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next','home')

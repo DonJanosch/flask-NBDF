@@ -7,7 +7,8 @@ from flask_login import current_user
 def broadcast_infochat(message):
     if len(message)>0:
         author = 'Gast'
-        if current_user.is_authenticated:
-            author = current_user.firstname
+        if current_user:
+            if current_user.is_authenticated:
+                author = current_user.firstname
         message = f'{author}: {message}'
         send(message, broadcast=True)
